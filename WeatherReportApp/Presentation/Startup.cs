@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Presentation.DataAccess;
 using Presentation.Services;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,9 @@ namespace Presentation
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("UTF-8"));
             });
+
+            services.AddDbContext<Weather_Report_DataContext>(options =>
+                   options.UseSqlServer(Configuration["connString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
