@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Presentation.Models.WeatherReport
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +7,36 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<p>
+    <h3>@Model.Records.DatasetDescription</h3>
+    <h3>@Model.Records.Location[0].LocationName</h3>
+</p>
+@foreach (var weatherEle in Model.Records.Location[0].WeatherElement)
+{
+    <div class="block">
+        @foreach (var timeEle in weatherEle.Time)
+        {
+        <p>
+            <span style="color:cadetblue">@timeEle.StartTime~@timeEle.EndTime</span>
+            <span style="color:burlywood">@timeEle.Parameter.ParameterName @(timeEle.Parameter.ParameterValue ?? timeEle.Parameter.ParameterUnit ?? string.Empty)</span>
+        </p>
+            
+        }
+    </div>
+}
+
+<style>
+    .row {
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .block {
+        width: 600px;
+        display: inline-block;
+        border: 1px solid black;
+    }
+</style>
+

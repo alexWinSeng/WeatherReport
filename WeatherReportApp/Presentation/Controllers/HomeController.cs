@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Presentation.Constants;
 using Presentation.Models;
 using Presentation.Services;
 using System;
@@ -22,7 +23,7 @@ namespace Presentation.Controllers
             _weatherReportService = weatherReportService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -32,9 +33,13 @@ namespace Presentation.Controllers
                 { "elementName", "" },
                 { "sort", "time" },
             };
-            var result = _weatherReportService.GetWeatherConditions(queryParams);
+            var result = await _weatherReportService.GetWeatherConditions(queryParams);
 
-
+            if (result.ErrorCode == ResponseCodes.Success && result.Data.Success)
+            {
+                var viewModel = result.Data;
+                return View(viewModel);
+            }
             return View();
         }
 
